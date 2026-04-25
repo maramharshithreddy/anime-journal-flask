@@ -13,13 +13,27 @@
             <div class="nav-links">
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
                 <a href="{{ url_for('new_entry') }}">New Entry</a>
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
+                {% if session.get("user_id") %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('register') }}">Register</a>
+                {% endif %}
             </div>
         </nav>
     </header>
 
     <main class="page">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-list">
+                    {% for category, message in messages %}
+                        <p class="flash flash-{{ category }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}{% endblock %}
     </main>
 

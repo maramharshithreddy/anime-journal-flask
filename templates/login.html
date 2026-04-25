@@ -5,6 +5,14 @@
 {% block content %}
 <section class="panel">
     <h1>Login</h1>
-    <p>This page will hold the login form.</p>
+    <form class="form" method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+
+        <button class="button" type="submit">Log In</button>
+    </form>
 </section>
 {% endblock %}

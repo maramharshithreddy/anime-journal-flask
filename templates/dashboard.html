@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard | Anime Journal{% endblock %}
+{% block title %}Dashboard | PILOT{% endblock %}
 
 {% block content %}
 <section class="dashboard-hero paper-card">
     <div>
-        <p class="eyebrow">Your journal clearing</p>
+        <p class="eyebrow">Your blossom dashboard</p>
         <h1>Welcome back, {{ username }}</h1>
-        <p>Your private entries are gathered here like pages tucked inside a well-loved notebook.</p>
+        <p>Your private entries float here like journal pages under a spring sky.</p>
     </div>
     <a class="button" href="{{ url_for('new_entry') }}">Write New Entry</a>
 </section>
@@ -33,7 +33,7 @@
     <section class="empty-state paper-card">
         <p class="eyebrow">Empty archive</p>
         <h2>Your story has not started yet.</h2>
-        <p>Begin with a quick note about what you watched, how it landed, or what scene stayed with you.</p>
+        <p>Begin with a quick note about what you watched, how it landed, or what scene drifted back to you.</p>
         <a class="button" href="{{ url_for('new_entry') }}">Create First Entry</a>
     </section>
 {% endif %}

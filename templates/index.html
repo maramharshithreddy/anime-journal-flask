@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Home | Anime Journal{% endblock %}
+{% block title %}Home | PILOT{% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-copy">
-        <p class="eyebrow">A quiet place for every episode arc</p>
-        <h1>Anime Journal</h1>
+        <p class="eyebrow">Blue skies, pink petals, private pages</p>
+        <h1>PILOT</h1>
         <p class="hero-tagline">Write your thoughts like scenes from your own story.</p>
-        <p class="hero-description">Keep private notes, moods, and little memories in a soft storybook journal made for peaceful reflection.</p>
+        <p class="hero-description">Step into a calm cherry blossom journal world for private notes, moods, and small memories that deserve a softer landing.</p>
         <div class="hero-actions">
             {% if session.get("user_id") %}
                 <a class="button" href="{{ url_for('dashboard') }}">Open Dashboard</a>
@@ -22,14 +22,14 @@
     <div class="hero-panel paper-card" aria-hidden="true">
         <div class="status-row">
             <span>Today's page</span>
-            <span class="leaf-mark"></span>
+            <span class="petal-mark"></span>
         </div>
-        <div class="painted-window">
+        <div class="sakura-window">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <p>Capture the feeling of a scene before it fades into the evening light.</p>
+        <p>Capture the feeling of a scene before it drifts away like a blossom on the breeze.</p>
     </div>
 </section>
 {% endblock %}

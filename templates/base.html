@@ -3,25 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Anime Journal{% endblock %}</title>
+    <title>{% block title %}PILOT{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="storybook-backdrop" aria-hidden="true">
         <span class="cloud cloud-one"></span>
         <span class="cloud cloud-two"></span>
-        <span class="sun-wash"></span>
-        <span class="hill hill-back"></span>
-        <span class="hill hill-front"></span>
-        <span class="leaf leaf-one"></span>
-        <span class="leaf leaf-two"></span>
+        <span class="blush-wash"></span>
+        <span class="petal petal-one"></span>
+        <span class="petal petal-two"></span>
+        <span class="petal petal-three"></span>
+        <span class="petal petal-four"></span>
         <span class="sparkle sparkle-one"></span>
         <span class="sparkle sparkle-two"></span>
     </div>
 
     <header class="site-header">
         <nav class="nav">
-            <a class="brand" href="{{ url_for('home') }}">Anime Journal</a>
+            <a class="brand" href="{{ url_for('home') }}">PILOT</a>
             <div class="nav-links">
                 {% if session.get("user_id") %}
                     <a href="{{ url_for('dashboard') }}">Dashboard</a>

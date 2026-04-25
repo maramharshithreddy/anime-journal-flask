@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}New Entry | Anime Journal{% endblock %}
+{% block title %}New Entry | PILOT{% endblock %}
 
 {% block content %}
 <section class="diary-console paper-card">
     <div class="console-heading">
-        <p class="eyebrow">A fresh notebook page</p>
+        <p class="eyebrow">Under the cherry blossoms</p>
         <h1>New Journal Entry</h1>
-        <p>Settle in and write the scene while the feeling is still warm.</p>
+        <p>Settle in and write the scene while the petals are still falling.</p>
     </div>
 
     <form class="form journal-form" method="post">
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="A soft evening episode" required>
+        <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="A quiet spring episode" required>
 
         <fieldset class="mood-field">
             <legend>Mood</legend>

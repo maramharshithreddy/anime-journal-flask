@@ -1,6 +1,6 @@
-# Anime Journal
+# PILOT
 
-Anime Journal is a private Flask journaling app for saving thoughts, moods, and episode notes in a neon anime night-city interface.
+PILOT is a private Flask journaling app for saving thoughts, moods, and episode notes in a soft blue and pink cherry blossom anime interface.
 
 ## Features
 

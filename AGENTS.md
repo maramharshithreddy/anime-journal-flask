@@ -1,8 +1,8 @@
-# Anime Journal Agent Guide
+# PILOT Agent Guide
 
 ## Project Overview
 
-Anime Journal is a beginner-friendly Flask app for private anime-themed journaling. It uses SQLite for local storage, Flask sessions for authentication state, and Jinja templates for the UI.
+PILOT is a beginner-friendly Flask app for private anime-themed journaling. It uses SQLite for local storage, Flask sessions for authentication state, and Jinja templates for the UI.
 
 ## Setup Commands
 

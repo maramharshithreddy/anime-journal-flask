@@ -34,10 +34,13 @@ body {
     min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
+    position: relative;
     background:
         radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.95), transparent 13rem),
         radial-gradient(circle at 84% 18%, rgba(255, 207, 225, 0.7), transparent 17rem),
         linear-gradient(180deg, #c7ecff 0%, #e9ecff 42%, #fff2f7 100%);
+    background-size: 100% 100%, 110% 110%, 100% 100%;
+    animation: sky-breathe 18s ease-in-out infinite alternate;
 }
 
 body::before {
@@ -65,8 +68,17 @@ a {
     overflow: hidden;
 }
 
+.petal-fall {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
 .cloud,
 .blush-wash,
+.sea-breeze,
 .petal,
 .sparkle {
     position: absolute;
@@ -85,12 +97,14 @@ a {
 .cloud-one {
     top: 6rem;
     left: -3rem;
+    animation: cloud-drift 36s ease-in-out infinite alternate;
 }
 
 .cloud-two {
     top: 11rem;
     right: 6rem;
     transform: scale(0.78);
+    animation: cloud-drift-small 42s ease-in-out infinite alternate;
 }
 
 .blush-wash {
@@ -100,6 +114,32 @@ a {
     height: 22rem;
     border-radius: 999px;
     background: radial-gradient(circle, rgba(255, 179, 207, 0.55), transparent 68%);
+    animation: blush-float 16s ease-in-out infinite alternate;
+}
+
+.sea-breeze {
+    left: -18vw;
+    width: 140vw;
+    height: 12rem;
+    border-radius: 999px;
+    background:
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent),
+        linear-gradient(90deg, transparent, rgba(117, 188, 228, 0.12), transparent);
+    filter: blur(14px);
+    opacity: 0.62;
+    transform: rotate(-5deg);
+}
+
+.sea-breeze-one {
+    top: 18%;
+    animation: breeze-flow 24s ease-in-out infinite;
+}
+
+.sea-breeze-two {
+    top: 54%;
+    opacity: 0.42;
+    transform: rotate(5deg);
+    animation: breeze-flow-reverse 31s ease-in-out infinite;
 }
 
 .petal {
@@ -114,24 +154,47 @@ a {
     top: 15rem;
     left: 8%;
     transform: rotate(-24deg);
+    animation: petal-hover 9s ease-in-out infinite alternate;
 }
 
 .petal-two {
     top: 23rem;
     right: 12%;
     transform: rotate(38deg) scale(1.15);
+    animation: petal-hover 11s ease-in-out infinite alternate-reverse;
 }
 
 .petal-three {
     bottom: 14rem;
     left: 16%;
     transform: rotate(12deg) scale(0.86);
+    animation: petal-hover 10s ease-in-out infinite alternate;
 }
 
 .petal-four {
     bottom: 22rem;
     right: 28%;
     transform: rotate(-42deg) scale(0.72);
+    animation: petal-hover 12s ease-in-out infinite alternate-reverse;
+}
+
+.falling-petal {
+    position: absolute;
+    top: -8vh;
+    left: var(--petal-left, 50vw);
+    width: var(--petal-size, 1rem);
+    height: calc(var(--petal-size, 1rem) * 0.7);
+    border-radius: 70% 30% 70% 30%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.94), transparent 38%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 169, 198, 0.82));
+    box-shadow: 0 10px 20px rgba(200, 91, 133, 0.12);
+    opacity: var(--petal-opacity, 0.62);
+    transform: translate3d(0, -8vh, 0) rotate(var(--petal-rotate, 0deg));
+    animation:
+        petal-fall var(--petal-duration, 18s) linear var(--petal-delay, 0s) infinite,
+        petal-sway var(--petal-sway-duration, 5s) ease-in-out var(--petal-delay, 0s) infinite alternate;
+    will-change: transform;
 }
 
 .sparkle {
@@ -155,7 +218,7 @@ a {
 .site-header {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 20;
     border-bottom: 1px solid rgba(88, 142, 190, 0.22);
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(16px);
@@ -225,6 +288,7 @@ a {
 
 .paper-card {
     position: relative;
+    z-index: 5;
     border: 1px solid var(--line);
     border-radius: 26px;
     background:
@@ -393,6 +457,106 @@ a {
     cursor: pointer;
     box-shadow: 0 12px 28px rgba(79, 128, 188, 0.22);
     transition: box-shadow 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+@keyframes sky-breathe {
+    from {
+        background-position: 0 0, 0 0, 0 0;
+    }
+
+    to {
+        background-position: 0 0, 3% 2%, 0 0;
+    }
+}
+
+@keyframes cloud-drift {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(4rem);
+    }
+}
+
+@keyframes cloud-drift-small {
+    from {
+        transform: translateX(0) scale(0.78);
+    }
+
+    to {
+        transform: translateX(-3rem) scale(0.78);
+    }
+}
+
+@keyframes blush-float {
+    from {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    to {
+        transform: translate3d(-1.4rem, 1.1rem, 0) scale(1.06);
+    }
+}
+
+@keyframes breeze-flow {
+    0% {
+        transform: translateX(-12vw) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateX(8vw) rotate(-4deg);
+    }
+
+    100% {
+        transform: translateX(-12vw) rotate(-5deg);
+    }
+}
+
+@keyframes breeze-flow-reverse {
+    0% {
+        transform: translateX(8vw) rotate(5deg);
+    }
+
+    50% {
+        transform: translateX(-10vw) rotate(4deg);
+    }
+
+    100% {
+        transform: translateX(8vw) rotate(5deg);
+    }
+}
+
+@keyframes petal-hover {
+    from {
+        margin-top: 0;
+        margin-left: 0;
+    }
+
+    to {
+        margin-top: 1.4rem;
+        margin-left: 1rem;
+    }
+}
+
+@keyframes petal-fall {
+    0% {
+        top: -8vh;
+    }
+
+    100% {
+        top: 112vh;
+    }
+}
+
+@keyframes petal-sway {
+    from {
+        transform: translate3d(calc(var(--petal-drift, 2rem) * -1), 0, 0) rotate(calc(var(--petal-rotate, 0deg) - 24deg));
+    }
+
+    to {
+        transform: translate3d(var(--petal-drift, 2rem), 0, 0) rotate(calc(var(--petal-rotate, 0deg) + 36deg));
+    }
 }
 
 .button:hover,
@@ -656,5 +820,19 @@ a {
     .hero-actions .button,
     .form-actions .button {
         width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+
+    .petal-fall {
+        display: none;
     }
 }

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Anime Journal{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Anime Journal</h1>
+    <p>Track episodes, capture reactions, and keep notes on the series you are watching.</p>
+    <a class="button" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Anime Journal{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Dashboard</h1>
+    <p>Your anime journal entries will appear here.</p>
+    <a class="button" href="{{ url_for('new_entry') }}">Write New Entry</a>
+</section>
+{% endblock %}

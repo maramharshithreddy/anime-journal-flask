@@ -3,11 +3,11 @@
 {% block title %}Dashboard | Anime Journal{% endblock %}
 
 {% block content %}
-<section class="dashboard-hero glass-card">
+<section class="dashboard-hero paper-card">
     <div>
-        <p class="eyebrow">Mission dashboard</p>
+        <p class="eyebrow">Your journal clearing</p>
         <h1>Welcome back, {{ username }}</h1>
-        <p>Your private anime journal is synced for tonight's thoughts.</p>
+        <p>Your private entries are gathered here like pages tucked inside a well-loved notebook.</p>
     </div>
     <a class="button" href="{{ url_for('new_entry') }}">Write New Entry</a>
 </section>
@@ -15,7 +15,7 @@
 {% if entries %}
     <section class="entry-grid" aria-label="Journal entries">
         {% for entry in entries %}
-            <article class="entry-card glass-card">
+            <article class="entry-card paper-card">
                 <div class="entry-card-header">
                     <div>
                         <h2>{{ entry["title"] }}</h2>
@@ -30,7 +30,7 @@
         {% endfor %}
     </section>
 {% else %}
-    <section class="empty-state glass-card">
+    <section class="empty-state paper-card">
         <p class="eyebrow">Empty archive</p>
         <h2>Your story has not started yet.</h2>
         <p>Begin with a quick note about what you watched, how it landed, or what scene stayed with you.</p>

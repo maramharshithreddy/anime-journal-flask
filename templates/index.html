@@ -5,9 +5,10 @@
 {% block content %}
 <section class="hero">
     <div class="hero-copy">
-        <p class="eyebrow">Private notes for every episode arc</p>
+        <p class="eyebrow">A quiet place for every episode arc</p>
         <h1>Anime Journal</h1>
-        <p class="hero-tagline">Write your thoughts like scenes from your own story</p>
+        <p class="hero-tagline">Write your thoughts like scenes from your own story.</p>
+        <p class="hero-description">Keep private notes, moods, and little memories in a soft storybook journal made for peaceful reflection.</p>
         <div class="hero-actions">
             {% if session.get("user_id") %}
                 <a class="button" href="{{ url_for('dashboard') }}">Open Dashboard</a>
@@ -18,18 +19,17 @@
             {% endif %}
         </div>
     </div>
-    <div class="hero-panel glass-card" aria-hidden="true">
+    <div class="hero-panel paper-card" aria-hidden="true">
         <div class="status-row">
-            <span>Night log</span>
-            <span class="pulse-dot"></span>
+            <span>Today's page</span>
+            <span class="leaf-mark"></span>
         </div>
-        <div class="signal-bars">
-            <span></span>
+        <div class="painted-window">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <p>Capture moods, scenes, and quiet afterthoughts in one private place.</p>
+        <p>Capture the feeling of a scene before it fades into the evening light.</p>
     </div>
 </section>
 {% endblock %}

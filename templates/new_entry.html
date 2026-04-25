@@ -3,16 +3,16 @@
 {% block title %}New Entry | Anime Journal{% endblock %}
 
 {% block content %}
-<section class="diary-console glass-card">
+<section class="diary-console paper-card">
     <div class="console-heading">
-        <p class="eyebrow">Futuristic diary console</p>
+        <p class="eyebrow">A fresh notebook page</p>
         <h1>New Journal Entry</h1>
-        <p>Log the scene while the feeling is still bright.</p>
+        <p>Settle in and write the scene while the feeling is still warm.</p>
     </div>
 
     <form class="form journal-form" method="post">
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="Episode 7 afterglow" required>
+        <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="A soft evening episode" required>
 
         <fieldset class="mood-field">
             <legend>Mood</legend>
@@ -28,7 +28,7 @@
         </fieldset>
 
         <label for="content">Content</label>
-        <textarea id="content" name="content" rows="10" maxlength="1000" placeholder="Describe the scene, the mood, the line that stayed with you..." required>{{ content or '' }}</textarea>
+        <textarea id="content" name="content" rows="10" maxlength="1000" placeholder="Describe the scene, the mood, the small detail that stayed with you..." required>{{ content or '' }}</textarea>
         <p class="character-counter" data-character-counter for="content">0/1000 characters</p>
 
         <div class="form-actions">

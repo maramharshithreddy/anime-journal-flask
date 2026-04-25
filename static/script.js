@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll("[data-confirm-delete]").forEach((button) => {
         button.addEventListener("click", (event) => {
-            const confirmed = window.confirm("Delete this journal entry?");
+            const confirmed = window.confirm("Delete this journal page?");
             if (!confirmed) {
                 event.preventDefault();
             }

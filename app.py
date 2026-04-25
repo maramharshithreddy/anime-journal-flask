@@ -30,6 +30,19 @@ def init_db():
         )
         """
     )
+    connection.execute(
+        """
+        CREATE TABLE IF NOT EXISTS journal_entries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            mood TEXT NOT NULL DEFAULT 'Calm',
+            content TEXT NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+        """
+    )
     connection.commit()
     connection.close()
 
@@ -116,16 +129,82 @@ def dashboard():
         flash("Please log in to view your dashboard.", "error")
         return redirect(url_for("login"))
 
-    return render_template("dashboard.html", username=session["username"])
+    connection = get_db_connection()
+    entries = connection.execute(
+        """
+        SELECT id, title, mood, content, created_at
+        FROM journal_entries
+        WHERE user_id = ?
+        ORDER BY created_at DESC, id DESC
+        """,
+        (session["user_id"],),
+    ).fetchall()
+    connection.close()
+
+    return render_template(
+        "dashboard.html", username=session["username"], entries=entries
+    )
 
 
-@app.route("/entries/new")
+@app.route("/new_entry", methods=["GET", "POST"])
 def new_entry():
     if "user_id" not in session:
         flash("Please log in to write a journal entry.", "error")
         return redirect(url_for("login"))
 
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        mood = request.form.get("mood", "").strip() or "Calm"
+        content = request.form.get("content", "").strip()
+
+        if not title or not content:
+            flash("Title and content are required.", "error")
+            return render_template(
+                "new_entry.html", title=title, mood=mood, content=content
+            )
+
+        connection = get_db_connection()
+        connection.execute(
+            """
+            INSERT INTO journal_entries (user_id, title, mood, content)
+            VALUES (?, ?, ?, ?)
+            """,
+            (session["user_id"], title, mood, content),
+        )
+        connection.commit()
+        connection.close()
+
+        flash("Journal entry saved.", "success")
+        return redirect(url_for("dashboard"))
+
     return render_template("new_entry.html")
+
+
+@app.route("/entries/new")
+def old_new_entry():
+    return redirect(url_for("new_entry"))
+
+
+@app.route("/delete/<int:entry_id>", methods=["POST"])
+def delete_entry(entry_id):
+    if "user_id" not in session:
+        flash("Please log in to manage your journal entries.", "error")
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+    result = connection.execute(
+        "DELETE FROM journal_entries WHERE id = ? AND user_id = ?",
+        (entry_id, session["user_id"]),
+    )
+    connection.commit()
+    connection.close()
+
+    if result.rowcount:
+        flash("Journal entry deleted.", "success")
+    else:
+        flash("That journal entry could not be found.", "error")
+
+    return redirect(url_for("dashboard"))
 
 
 if __name__ == "__main__":

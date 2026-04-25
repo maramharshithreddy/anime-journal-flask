@@ -5,6 +5,25 @@
 {% block content %}
 <section class="panel">
     <h1>New Journal Entry</h1>
-    <p>This page will hold the journal entry form.</p>
+    <form class="form journal-form" method="post">
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" value="{{ title or '' }}" required>
+
+        <label for="mood">Mood</label>
+        <select id="mood" name="mood">
+            {% set selected_mood = mood or "Calm" %}
+            {% for option in ["Calm", "Focused", "Happy", "Sad", "Inspired", "Tired"] %}
+                <option value="{{ option }}" {% if selected_mood == option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="content">Content</label>
+        <textarea id="content" name="content" rows="8" required>{{ content or '' }}</textarea>
+
+        <div class="form-actions">
+            <button class="button" type="submit">Save Entry</button>
+            <a class="button button-secondary" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </form>
 </section>
 {% endblock %}

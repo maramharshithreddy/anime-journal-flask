@@ -3,23 +3,26 @@
 {% block title %}Dashboard | Anime Journal{% endblock %}
 
 {% block content %}
-<section class="panel">
-    <h1>Dashboard</h1>
-    <p>Welcome back, {{ username }}. Your private anime journal is ready.</p>
+<section class="dashboard-hero glass-card">
+    <div>
+        <p class="eyebrow">Mission dashboard</p>
+        <h1>Welcome back, {{ username }}</h1>
+        <p>Your private anime journal is synced for tonight's thoughts.</p>
+    </div>
     <a class="button" href="{{ url_for('new_entry') }}">Write New Entry</a>
 </section>
 
 {% if entries %}
     <section class="entry-grid" aria-label="Journal entries">
         {% for entry in entries %}
-            <article class="entry-card">
+            <article class="entry-card glass-card">
                 <div class="entry-card-header">
                     <div>
                         <h2>{{ entry["title"] }}</h2>
                         <p class="entry-meta">{{ entry["mood"] }} &middot; {{ entry["created_at"] }}</p>
                     </div>
                     <form method="post" action="{{ url_for('delete_entry', entry_id=entry['id']) }}">
-                        <button class="button button-danger" type="submit">Delete</button>
+                        <button class="button button-danger" type="submit" data-confirm-delete>Delete</button>
                     </form>
                 </div>
                 <p>{{ entry["content"][:180] }}{% if entry["content"]|length > 180 %}...{% endif %}</p>
@@ -27,7 +30,8 @@
         {% endfor %}
     </section>
 {% else %}
-    <section class="empty-state">
+    <section class="empty-state glass-card">
+        <p class="eyebrow">Empty archive</p>
         <h2>No entries yet</h2>
         <p>Start with a quick note about what you watched, how it landed, or what scene stayed with you.</p>
         <a class="button" href="{{ url_for('new_entry') }}">Create First Entry</a>

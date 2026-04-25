@@ -4,8 +4,32 @@
 
 {% block content %}
 <section class="hero">
-    <h1>Anime Journal</h1>
-    <p>Track episodes, capture reactions, and keep notes on the series you are watching.</p>
-    <a class="button" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+    <div class="hero-copy">
+        <p class="eyebrow">Private notes for every episode arc</p>
+        <h1>Anime Journal</h1>
+        <p class="hero-tagline">Write your thoughts like scenes from your own story</p>
+        <div class="hero-actions">
+            {% if session.get("user_id") %}
+                <a class="button" href="{{ url_for('dashboard') }}">Open Dashboard</a>
+                <a class="button button-secondary" href="{{ url_for('new_entry') }}">Write Entry</a>
+            {% else %}
+                <a class="button" href="{{ url_for('register') }}">Register</a>
+                <a class="button button-secondary" href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-panel glass-card" aria-hidden="true">
+        <div class="status-row">
+            <span>Night log</span>
+            <span class="pulse-dot"></span>
+        </div>
+        <div class="signal-bars">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>Capture moods, scenes, and quiet afterthoughts in one private place.</p>
+    </div>
 </section>
 {% endblock %}

@@ -3,22 +3,33 @@
 {% block title %}New Entry | Anime Journal{% endblock %}
 
 {% block content %}
-<section class="panel">
-    <h1>New Journal Entry</h1>
+<section class="diary-console glass-card">
+    <div class="console-heading">
+        <p class="eyebrow">Futuristic diary console</p>
+        <h1>New Journal Entry</h1>
+        <p>Log the scene while the feeling is still bright.</p>
+    </div>
+
     <form class="form journal-form" method="post">
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" value="{{ title or '' }}" required>
+        <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="Episode 7 afterglow" required>
 
-        <label for="mood">Mood</label>
-        <select id="mood" name="mood">
-            {% set selected_mood = mood or "Calm" %}
-            {% for option in ["Calm", "Focused", "Happy", "Sad", "Inspired", "Tired"] %}
-                <option value="{{ option }}" {% if selected_mood == option %}selected{% endif %}>{{ option }}</option>
-            {% endfor %}
-        </select>
+        <fieldset class="mood-field">
+            <legend>Mood</legend>
+            <div class="mood-chip-group">
+                {% set selected_mood = mood or "Calm" %}
+                {% for option in ["Calm", "Focused", "Happy", "Sad", "Inspired", "Tired"] %}
+                    <label class="mood-chip">
+                        <input type="radio" name="mood" value="{{ option }}" {% if selected_mood == option %}checked{% endif %}>
+                        <span>{{ option }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </fieldset>
 
         <label for="content">Content</label>
-        <textarea id="content" name="content" rows="8" required>{{ content or '' }}</textarea>
+        <textarea id="content" name="content" rows="10" maxlength="1000" placeholder="Describe the scene, the mood, the line that stayed with you..." required>{{ content or '' }}</textarea>
+        <p class="character-counter" data-character-counter for="content">0/1000 characters</p>
 
         <div class="form-actions">
             <button class="button" type="submit">Save Entry</button>

@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="city-glow" aria-hidden="true">
+        <span class="glow glow-cyan"></span>
+        <span class="glow glow-pink"></span>
+        <span class="skyline"></span>
+    </div>
+
     <header class="site-header">
         <nav class="nav">
             <a class="brand" href="{{ url_for('home') }}">Anime Journal</a>
             <div class="nav-links">
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a href="{{ url_for('new_entry') }}">New Entry</a>
                 {% if session.get("user_id") %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('new_entry') }}">New Entry</a>
                     <a href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
                     <a href="{{ url_for('login') }}">Login</a>
@@ -26,7 +32,7 @@
     <main class="page">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-list">
+                <div class="flash-list" role="status" aria-live="polite">
                     {% for category, message in messages %}
                         <p class="flash flash-{{ category }}">{{ message }}</p>
                     {% endfor %}

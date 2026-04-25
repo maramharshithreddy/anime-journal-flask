@@ -1,20 +1,40 @@
 # Anime Journal
 
-A Flask starter project for an anime-themed journaling app.
+Anime Journal is a private Flask journaling app for saving thoughts, moods, and episode notes in a neon anime night-city interface.
 
-## Setup
+## Features
+
+- User registration, login, and logout
+- Password hashing with Werkzeug
+- Private journal entries stored per user
+- Create and delete journal entries
+- Mood selection for each entry
+- Dashboard entry cards with previews
+- Flash messages for success and error states
+- Live character counter on the journal entry form
+
+## Tech Stack
+
+- Python
+- Flask
+- SQLite
+- HTML templates with Jinja
+- CSS
+- Minimal JavaScript
+
+## Setup On Windows
 
 Create and activate a virtual environment:
 
 ```powershell
-python -m venv .venv
+py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
 Install dependencies:
 
 ```powershell
-pip install -r requirements.txt
+py -m pip install -r requirements.txt
 ```
 
 ## Run
@@ -22,7 +42,24 @@ pip install -r requirements.txt
 Start the development server:
 
 ```powershell
-python app.py
+py app.py
 ```
 
 Open http://127.0.0.1:5000 in your browser.
+
+## Usage Flow
+
+1. Register a new account.
+2. Log in with your username and password.
+3. Create a journal entry from the New Entry page.
+4. Review your entries on the dashboard.
+5. Delete entries you no longer want.
+6. Log out when you are finished.
+
+## Database
+
+The app uses `database.db`, which is generated locally when the app starts. This file is ignored by Git so each developer has their own local database.
+
+## Screenshots
+
+Screenshots will be added later.

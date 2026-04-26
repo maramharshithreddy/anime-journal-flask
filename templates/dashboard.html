@@ -19,13 +19,13 @@
                 <div class="entry-card-header">
                     <div>
                         <h2>{{ entry["title"] }}</h2>
-                        <p class="entry-meta">{{ entry["mood"] }} &middot; {{ entry["created_at"] }}</p>
+                        <p class="entry-meta">{{ entry["mode"] or "Calm" }} &middot; {{ entry["mood"] }} &middot; {{ entry["created_at"] }}</p>
                     </div>
                     <form method="post" action="{{ url_for('delete_entry', entry_id=entry['id']) }}">
                         <button class="button button-danger" type="submit" data-confirm-delete>Delete</button>
                     </form>
                 </div>
-                <p>{{ entry["content"][:180] }}{% if entry["content"]|length > 180 %}...{% endif %}</p>
+                <p>{{ entry["display_content"][:180] }}{% if entry["display_content"]|length > 180 %}...{% endif %}</p>
             </article>
         {% endfor %}
     </section>

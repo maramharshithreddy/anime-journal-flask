@@ -3,16 +3,38 @@
 {% block title %}New Entry | PILOT{% endblock %}
 
 {% block content %}
-<section class="diary-console paper-card">
+<section class="diary-console writing-studio paper-card" data-writing-studio>
     <div class="console-heading">
-        <p class="eyebrow">Under the cherry blossoms</p>
+        <p class="eyebrow">Voice-first writing studio</p>
         <h1>New Journal Entry</h1>
-        <p>Settle in and write the scene while the petals are still falling.</p>
+        <p>Speak or write the raw thought, choose a mode, then decide what becomes your final journal page.</p>
     </div>
 
     <form class="form journal-form" method="post">
         <label for="title">Title</label>
         <input id="title" name="title" type="text" value="{{ title or '' }}" placeholder="A quiet spring episode" required>
+
+        <fieldset class="mode-field">
+            <legend>Journal Mode</legend>
+            <div class="mode-grid" data-mode-selector>
+                {% set selected_mode = mode or "Calm" %}
+                {% set mode_descriptions = {
+                    "Calm": "Soft, peaceful, grounding.",
+                    "Cinematic": "Visual, dramatic, scene-based.",
+                    "Poetic": "Expressive, lyrical, beautiful.",
+                    "Clarity": "Organized, practical, clean."
+                } %}
+                {% for option in ["Calm", "Cinematic", "Poetic", "Clarity"] %}
+                    <label class="mode-card mode-{{ option|lower }}">
+                        <input type="radio" name="mode" value="{{ option }}" {% if selected_mode == option %}checked{% endif %}>
+                        <span>
+                            <strong>{{ option }}</strong>
+                            <small>{{ mode_descriptions[option] }}</small>
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
+        </fieldset>
 
         <fieldset class="mood-field">
             <legend>Mood</legend>
@@ -27,9 +49,37 @@
             </div>
         </fieldset>
 
-        <label for="content">Content</label>
-        <textarea id="content" name="content" rows="10" maxlength="1000" placeholder="Describe the scene, the mood, the small detail that stayed with you..." required>{{ content or '' }}</textarea>
-        <p class="character-counter" data-character-counter for="content">0/1000 characters</p>
+        <section class="studio-grid">
+            <div class="studio-panel">
+                <div class="field-heading">
+                    <label for="raw-content">Raw thought</label>
+                    <button class="button button-secondary voice-button" type="button" data-voice-button>Start Voice</button>
+                </div>
+                <textarea id="raw-content" name="original_content" rows="9" maxlength="1000" data-raw-content data-counter-source="raw" placeholder="Speak or type the thought exactly as it arrives..." required>{{ original_content or content or '' }}</textarea>
+                <p class="character-counter" data-character-counter data-counter-for="raw-content">0/1000 characters</p>
+                <p class="voice-status" data-voice-status>Voice input uses your browser if available.</p>
+            </div>
+
+            <div class="studio-panel ai-panel">
+                <p class="eyebrow">AI Assist suggestion</p>
+                <div class="assist-actions">
+                    <button class="button" type="button" data-ai-action="Transform my thought">Transform my thought</button>
+                    <button class="button button-secondary" type="button" data-ai-action="Make it softer">Make it softer</button>
+                    <button class="button button-secondary" type="button" data-ai-action="Summarize meaning">Summarize meaning</button>
+                </div>
+                <textarea id="ai-output" name="ai_output" rows="8" data-ai-output placeholder="AI suggestions appear here. They will not replace your writing unless you accept them.">{{ ai_output or '' }}</textarea>
+                <div class="assist-controls">
+                    <button class="button" type="button" data-accept-suggestion>Accept suggestion</button>
+                    <button class="button button-secondary" type="button" data-copy-suggestion>Copy suggestion</button>
+                    <button class="button button-secondary" type="button" data-discard-suggestion>Discard suggestion</button>
+                </div>
+                <p class="ai-status" data-ai-status>Suggestions are drafts. You stay in control.</p>
+            </div>
+        </section>
+
+        <label for="content">Final journal content</label>
+        <textarea id="content" name="final_content" rows="10" maxlength="1200" data-final-content data-counter-source="final" placeholder="Save your own final version here. Accepting a suggestion places it here only after you click Accept." required>{{ final_content or original_content or content or '' }}</textarea>
+        <p class="character-counter" data-character-counter data-counter-for="content">0/1200 characters</p>
 
         <div class="form-actions">
             <button class="button" type="submit">Save Entry</button>

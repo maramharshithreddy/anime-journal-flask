@@ -11,6 +11,40 @@ app.secret_key = "anime-journal-dev-key"
 DATABASE = "database.db"
 JOURNAL_MODES = ("Calm", "Cinematic", "Poetic", "Clarity")
 AI_ACTIONS = ("Transform my thought", "Make it softer", "Summarize meaning")
+MODE_BEHAVIOR = {
+    "Calm": {
+        "label": "Calm suggestion",
+        "voice": "soft, peaceful, grounding, emotionally gentle",
+        "opening": "I can let this arrive gently.",
+        "bridge": "There is room to breathe around it.",
+        "image": "like petals resting on quiet water",
+        "next_step": "pause, name the feeling, and offer myself one small kindness",
+    },
+    "Cinematic": {
+        "label": "Cinematic suggestion",
+        "voice": "visual, story-like, dramatic, scene-based",
+        "opening": "The scene opens in a wash of blue-pink light.",
+        "bridge": "The camera lingers on the feeling before anything needs to be solved.",
+        "image": "like a final frame held after the music softens",
+        "next_step": "notice the image, the tension, and the choice the scene is pointing toward",
+    },
+    "Poetic": {
+        "label": "Poetic suggestion",
+        "voice": "expressive, metaphorical, lyrical, beautiful",
+        "opening": "Something tender is trying to become language.",
+        "bridge": "It moves through me with a small shimmer of truth.",
+        "image": "like a blossom crossing the sky before dusk",
+        "next_step": "keep the image that glows and let the rest fall away",
+    },
+    "Clarity": {
+        "label": "Clarity suggestion",
+        "voice": "organized, practical, clean, action-oriented",
+        "opening": "Here is the thought in clearer shape.",
+        "bridge": "I can separate the feeling from the next step.",
+        "image": "like a clean horizon after the clouds open",
+        "next_step": "identify what matters, what can wait, and one action I can take",
+    },
+}
 
 
 def get_db_connection():
@@ -79,51 +113,82 @@ def clean_ai_text(text):
     return " ".join(text.strip().split())
 
 
+def mode_profile(mode):
+    return MODE_BEHAVIOR[normalize_mode(mode)]
+
+
+def sentence_case(text):
+    text = clean_ai_text(text)
+    if not text:
+        return ""
+    return text[0].upper() + text[1:]
+
+
+def infer_emotional_tone(text, mode):
+    text_lower = text.lower()
+    if any(word in text_lower for word in ("tired", "overwhelmed", "sad", "heavy")):
+        return "heavy but honest"
+    if any(word in text_lower for word in ("happy", "hopeful", "excited", "inspired")):
+        return "bright and hopeful"
+    if mode == "Clarity":
+        return "focused and reflective"
+    if mode == "Cinematic":
+        return "vivid and emotionally charged"
+    if mode == "Poetic":
+        return "tender and expressive"
+    return "quiet and reflective"
+
+
+def infer_main_theme(text):
+    text = clean_ai_text(text)
+    if len(text) <= 90:
+        return text
+    return f"{text[:87]}..."
+
+
 def transform_thought(text, mode):
     text = clean_ai_text(text)
-    mode = normalize_mode(mode)
+    profile = mode_profile(mode)
 
     if not text:
         return "Share a thought first, and PILOT will help shape it."
 
-    if mode == "Cinematic":
+    if normalize_mode(mode) == "Clarity":
         return (
-            "Cinematic suggestion: The moment opens like a quiet scene: "
-            f"{text} The feeling lingers in the frame, asking to be noticed."
-        )
-    if mode == "Poetic":
-        return (
-            "Poetic suggestion: "
-            f"{text} It drifts through me like a soft blossom, carrying a small truth in its light."
-        )
-    if mode == "Clarity":
-        return (
-            "Clarity suggestion: "
-            f"{text} Main takeaway: name the feeling, keep what matters, and choose one gentle next step."
+            f"{profile['label']}:\n"
+            f"{profile['opening']}\n"
+            f"Thought: {sentence_case(text)}\n"
+            f"Meaning: {profile['bridge']}\n"
+            f"Next step: {profile['next_step']}."
         )
 
     return (
-        "Calm suggestion: "
-        f"{text} I can let this feeling arrive softly, breathe with it, and give it a safe place on the page."
+        f"{profile['label']}:\n"
+        f"{profile['opening']} {sentence_case(text)}\n"
+        f"{profile['bridge']} It feels {profile['image']}, and it deserves a page where it can be seen without being forced."
     )
 
 
 def make_softer(text, mode):
     text = clean_ai_text(text)
     mode = normalize_mode(mode)
+    profile = mode_profile(mode)
 
     if not text:
         return "There is no rush. Start with one honest sentence, and let the rest come slowly."
 
     return (
-        f"{mode} softer suggestion: I am allowed to feel this without solving it all at once. "
-        f"{text} I can meet this moment with patience, care, and a little more room to breathe."
+        f"{mode} softer suggestion:\n"
+        "I do not have to carry this perfectly.\n"
+        f"{sentence_case(text)}\n"
+        f"I can meet this with the {profile['voice']} tone of this mode: {profile['next_step']}."
     )
 
 
 def summarize_meaning(text, mode):
     text = clean_ai_text(text)
     mode = normalize_mode(mode)
+    profile = mode_profile(mode)
 
     if not text:
         return (
@@ -133,9 +198,10 @@ def summarize_meaning(text, mode):
         )
 
     return (
-        f"Emotional tone: {mode.lower()} and reflective.\n"
-        f"Main theme: {text[:120]}{'...' if len(text) > 120 else ''}\n"
-        "Possible next step: choose one detail worth carrying forward."
+        f"Emotional tone: {infer_emotional_tone(text, mode)}.\n"
+        f"Main theme: {infer_main_theme(text)}\n"
+        f"Mode lens: {profile['voice']}.\n"
+        f"Possible next step: {profile['next_step']}."
     )
 
 

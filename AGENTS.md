@@ -28,6 +28,8 @@ The local app runs at http://127.0.0.1:5000.
 - Prefer small helper functions over clever abstractions.
 - Keep templates simple and descriptive.
 - Do not add paid APIs or extra web frameworks.
+- Keep AI assist behavior deterministic unless a real model integration is explicitly requested.
+- Tune mode writing behavior through `MODE_BEHAVIOR` in `app.py`.
 
 ## Security Rules
 

@@ -18,6 +18,7 @@
             <legend>Journal Mode</legend>
             <div class="mode-grid" data-mode-selector>
                 {% set selected_mode = mode or "Calm" %}
+                <input type="hidden" name="mode" id="selected-mode" value="{{ selected_mode }}" data-selected-mode>
                 {% set mode_descriptions = {
                     "Calm": "Soft, peaceful, grounding.",
                     "Cinematic": "Visual, dramatic, scene-based.",
@@ -25,8 +26,8 @@
                     "Clarity": "Organized, practical, clean."
                 } %}
                 {% for option in ["Calm", "Cinematic", "Poetic", "Clarity"] %}
-                    <label class="mode-card mode-{{ option|lower }}">
-                        <input type="radio" name="mode" value="{{ option }}" {% if selected_mode == option %}checked{% endif %}>
+                    <label class="mode-card mode-{{ option|lower }}" data-mode-option data-mode-value="{{ option }}">
+                        <input type="radio" name="mode_choice" value="{{ option }}" {% if selected_mode == option %}checked{% endif %}>
                         <span>
                             <strong>{{ option }}</strong>
                             <small>{{ mode_descriptions[option] }}</small>

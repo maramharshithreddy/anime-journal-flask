@@ -49,11 +49,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const aiOutput = document.querySelector("[data-ai-output]");
     const aiStatus = document.querySelector("[data-ai-status]");
     const voiceStatus = document.querySelector("[data-voice-status]");
+    const selectedModeInput = document.querySelector("[data-selected-mode]");
     let finalWasEdited = Boolean(finalContent && finalContent.value.trim());
 
     const selectedMode = () => {
-        const checked = document.querySelector('input[name="mode"]:checked');
+        if (selectedModeInput && selectedModeInput.value) {
+            return selectedModeInput.value;
+        }
+
+        const checked = document.querySelector('input[name="mode_choice"]:checked');
         return checked ? checked.value : "Calm";
+    };
+
+    const setSelectedMode = (mode) => {
+        const modeValue = mode || "Calm";
+
+        if (selectedModeInput) {
+            selectedModeInput.value = modeValue;
+        }
+
+        document.querySelectorAll('input[name="mode_choice"]').forEach((input) => {
+            input.checked = input.value === modeValue;
+        });
+        updateStudioMode();
     };
 
     const updateStudioMode = () => {
@@ -62,10 +80,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    document.querySelectorAll('input[name="mode"]').forEach((input) => {
-        input.addEventListener("change", updateStudioMode);
+    document.querySelectorAll("[data-mode-option]").forEach((option) => {
+        option.addEventListener("click", () => {
+            setSelectedMode(option.dataset.modeValue);
+        });
     });
-    updateStudioMode();
+
+    document.querySelectorAll('input[name="mode_choice"]').forEach((input) => {
+        input.addEventListener("change", () => {
+            setSelectedMode(input.value);
+        });
+    });
+    setSelectedMode(selectedMode());
 
     if (rawContent && finalContent) {
         rawContent.addEventListener("input", () => {

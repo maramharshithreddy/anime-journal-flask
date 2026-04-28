@@ -144,8 +144,10 @@ def ensure_journal_entry_columns(connection):
 
 
 def normalize_mode(mode):
-    if mode in JOURNAL_MODES:
-        return mode
+    mode_lookup = {journal_mode.lower(): journal_mode for journal_mode in JOURNAL_MODES}
+    normalized = mode_lookup.get(clean_ai_text(str(mode)).lower())
+    if normalized:
+        return normalized
     return "Calm"
 
 

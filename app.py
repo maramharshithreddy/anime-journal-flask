@@ -85,6 +85,14 @@ CONTENT_KEYWORDS = {
         "hearing",
     ),
 }
+ML_CONTENT_TYPE_TO_INTERNAL = {
+    "personal_feeling": "personal feeling",
+    "factual_news": "news/fact",
+    "goal_task": "goal/task",
+    "memory": "memory",
+    "relationship": "relationship",
+    "uncertainty": "uncertainty",
+}
 
 
 def get_db_connection():
@@ -259,6 +267,53 @@ def detect_intensity(text_lower):
 
 
 def analyze_input(text):
+    ml_prediction = predict_input_pattern_safe(text)
+    if ml_prediction:
+        return build_analysis_from_prediction(text, ml_prediction)
+    return analyze_input_rule_based(text)
+
+
+def predict_input_pattern_safe(text):
+    try:
+        from ml.predictor import predict_input_pattern
+
+        return predict_input_pattern(text)
+    except Exception:
+        return None
+
+
+def build_analysis_from_prediction(text, prediction):
+    cleaned = clean_ai_text(text)
+    text_lower = cleaned.lower()
+    content_type = ML_CONTENT_TYPE_TO_INTERNAL.get(
+        prediction.get("content_type"), detect_content_type(text_lower)
+    )
+    emotional_tone = prediction.get("tone") or detect_emotional_tone(text_lower)
+    intensity = prediction.get("intensity") or detect_intensity(text_lower)
+    factual_markers = CONTENT_KEYWORDS["news/fact"] + (
+        "temporary restraining order",
+        "public",
+        "official",
+    )
+    is_factual = content_type == "news/fact" or contains_any(text_lower, factual_markers)
+
+    return {
+        "cleaned": cleaned,
+        "emotional_tone": emotional_tone,
+        "content_type": content_type,
+        "intensity": intensity,
+        "key_phrases": extract_key_phrases(cleaned),
+        "is_factual": is_factual,
+        "is_emotional": not is_factual
+        and (
+            emotional_tone != "neutral"
+            or content_type in ("personal feeling", "relationship", "memory", "uncertainty")
+        ),
+        "source": prediction.get("source", "ml_classifier"),
+    }
+
+
+def analyze_input_rule_based(text):
     cleaned = clean_ai_text(text)
     text_lower = cleaned.lower()
     content_type = detect_content_type(text_lower)
@@ -282,6 +337,7 @@ def analyze_input(text):
             emotional_tone != "neutral"
             or content_type in ("personal feeling", "relationship", "memory", "uncertainty")
         ),
+        "source": "rule_based",
     }
 
 

@@ -1,0 +1,70 @@
+{"text":"I feel tired but I still want to become better","tone":"hopeful","content_type":"personal_feeling","intensity":"medium"}
+{"text":"I am sad tonight and everything feels far away","tone":"sad","content_type":"personal_feeling","intensity":"medium"}
+{"text":"I feel anxious about tomorrow's meeting","tone":"anxious","content_type":"personal_feeling","intensity":"medium"}
+{"text":"I am furious that nobody listened to me","tone":"angry","content_type":"personal_feeling","intensity":"high"}
+{"text":"I feel calm after walking home in the rain","tone":"neutral","content_type":"personal_feeling","intensity":"low"}
+{"text":"I feel inspired to start drawing again","tone":"inspired","content_type":"personal_feeling","intensity":"medium"}
+{"text":"I do not know why I feel so unsettled","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"Mayor denied new temporary restraining order in removal case","tone":"neutral","content_type":"factual_news","intensity":"medium"}
+{"text":"Court officials announced a hearing for next week","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"The council approved the budget after a long debate","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"A judge rejected the appeal in the housing dispute","tone":"neutral","content_type":"factual_news","intensity":"medium"}
+{"text":"Officials reported delays after the storm damaged roads","tone":"neutral","content_type":"factual_news","intensity":"medium"}
+{"text":"The school board postponed the vote until Friday","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"New safety rules were announced for the downtown station","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"I need to finish my assignment but I keep avoiding it","tone":"anxious","content_type":"goal_task","intensity":"medium"}
+{"text":"I have to study but my mind keeps drifting","tone":"anxious","content_type":"goal_task","intensity":"medium"}
+{"text":"I want to clean my room and reset my week","tone":"hopeful","content_type":"goal_task","intensity":"low"}
+{"text":"I must send the application before midnight","tone":"anxious","content_type":"goal_task","intensity":"high"}
+{"text":"I finished one small task and it helped","tone":"hopeful","content_type":"goal_task","intensity":"low"}
+{"text":"I keep delaying the email because I am nervous","tone":"anxious","content_type":"goal_task","intensity":"medium"}
+{"text":"I want to build a better morning routine","tone":"hopeful","content_type":"goal_task","intensity":"medium"}
+{"text":"I miss the way things used to feel","tone":"sad","content_type":"memory","intensity":"medium"}
+{"text":"I remembered a summer evening from childhood","tone":"neutral","content_type":"memory","intensity":"low"}
+{"text":"The old song made me miss my friends","tone":"sad","content_type":"memory","intensity":"medium"}
+{"text":"I found a photo that made me feel inspired","tone":"inspired","content_type":"memory","intensity":"medium"}
+{"text":"I keep thinking about the place I used to live","tone":"sad","content_type":"memory","intensity":"medium"}
+{"text":"A memory came back and I do not know what it means","tone":"confused","content_type":"memory","intensity":"medium"}
+{"text":"I remembered how proud I felt after finishing that project","tone":"hopeful","content_type":"memory","intensity":"low"}
+{"text":"My friend has been distant and I feel hurt","tone":"sad","content_type":"relationship","intensity":"medium"}
+{"text":"I am angry about what they said to me","tone":"angry","content_type":"relationship","intensity":"high"}
+{"text":"I want to apologize but I am scared","tone":"anxious","content_type":"relationship","intensity":"medium"}
+{"text":"My family dinner was quiet but peaceful","tone":"neutral","content_type":"relationship","intensity":"low"}
+{"text":"I feel hopeful after talking with my sister","tone":"hopeful","content_type":"relationship","intensity":"medium"}
+{"text":"I am confused about whether they still care","tone":"confused","content_type":"relationship","intensity":"medium"}
+{"text":"Someone encouraged me and it made my day brighter","tone":"inspired","content_type":"relationship","intensity":"medium"}
+{"text":"Maybe I chose the wrong path","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"I am unsure whether I should move or stay","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"What if I fail after trying so hard","tone":"anxious","content_type":"uncertainty","intensity":"high"}
+{"text":"I do not know what I want yet","tone":"confused","content_type":"uncertainty","intensity":"low"}
+{"text":"Maybe tomorrow will make more sense","tone":"hopeful","content_type":"uncertainty","intensity":"low"}
+{"text":"I feel stuck between two choices","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"I cannot tell if I am tired or unhappy","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"The train arrived ten minutes late","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"I am excited to start the new class","tone":"inspired","content_type":"goal_task","intensity":"medium"}
+{"text":"I cried after hearing the news","tone":"sad","content_type":"personal_feeling","intensity":"high"}
+{"text":"I feel proud that I kept going","tone":"hopeful","content_type":"personal_feeling","intensity":"medium"}
+{"text":"I am so nervous that my chest feels tight","tone":"anxious","content_type":"personal_feeling","intensity":"high"}
+{"text":"I resent how much pressure I am under","tone":"angry","content_type":"personal_feeling","intensity":"medium"}
+{"text":"The committee released its final report","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"Officials denied the request for emergency funding","tone":"neutral","content_type":"factual_news","intensity":"medium"}
+{"text":"I need to call the office before it closes","tone":"neutral","content_type":"goal_task","intensity":"low"}
+{"text":"I keep avoiding my taxes because I feel overwhelmed","tone":"anxious","content_type":"goal_task","intensity":"high"}
+{"text":"I miss our late night conversations","tone":"sad","content_type":"relationship","intensity":"medium"}
+{"text":"They helped me believe I could try again","tone":"hopeful","content_type":"relationship","intensity":"medium"}
+{"text":"I remember feeling free at the beach","tone":"inspired","content_type":"memory","intensity":"low"}
+{"text":"I cannot stop thinking about an old mistake","tone":"sad","content_type":"memory","intensity":"high"}
+{"text":"I am unsure how to explain what happened","tone":"confused","content_type":"uncertainty","intensity":"medium"}
+{"text":"I feel angry because the plan changed without warning","tone":"angry","content_type":"personal_feeling","intensity":"medium"}
+{"text":"The mayor scheduled a press conference after the ruling","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"I want to practice every day and get stronger","tone":"hopeful","content_type":"goal_task","intensity":"medium"}
+{"text":"My partner seemed upset and I do not understand why","tone":"confused","content_type":"relationship","intensity":"medium"}
+{"text":"I feel inspired after watching the sunrise","tone":"inspired","content_type":"personal_feeling","intensity":"low"}
+{"text":"The appeal hearing was delayed again","tone":"neutral","content_type":"factual_news","intensity":"medium"}
+{"text":"I need to finish the presentation and stop procrastinating","tone":"anxious","content_type":"goal_task","intensity":"medium"}
+{"text":"I miss my old neighborhood more than I expected","tone":"sad","content_type":"memory","intensity":"medium"}
+{"text":"I am angry that they dismissed my concern","tone":"angry","content_type":"relationship","intensity":"high"}
+{"text":"Maybe I am closer to changing than I think","tone":"hopeful","content_type":"uncertainty","intensity":"low"}
+{"text":"I feel confused but curious about what comes next","tone":"confused","content_type":"personal_feeling","intensity":"low"}
+{"text":"City officials approved temporary shelter plans","tone":"neutral","content_type":"factual_news","intensity":"low"}
+{"text":"I am terrified that I will disappoint everyone","tone":"anxious","content_type":"personal_feeling","intensity":"high"}

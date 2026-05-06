@@ -60,6 +60,24 @@ Open http://127.0.0.1:5000 in your browser.
 
 The app uses `database.db`, which is generated locally when the app starts. This file is ignored by Git so each developer has their own local database.
 
+## Optional Local ML
+
+PILOT includes optional local ML input-pattern recognition for tone, content type, and intensity. The Flask app still works without trained models because it falls back to the rule-based analyzer.
+
+Train the classifiers:
+
+```powershell
+py ml/train_tone_classifier.py
+```
+
+Evaluate them:
+
+```powershell
+py ml/evaluate_classifier.py
+```
+
+The trained `.joblib` model files are saved in `models/`.
+
 ## Screenshots
 
 Screenshots will be added later.

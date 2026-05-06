@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const finalContent = document.querySelector("[data-final-content]");
     const aiOutput = document.querySelector("[data-ai-output]");
     const aiStatus = document.querySelector("[data-ai-status]");
+    const aiAnalysis = document.querySelector("[data-ai-analysis]");
     const voiceStatus = document.querySelector("[data-voice-status]");
     const selectedModeInput = document.querySelector("[data-selected-mode]");
     let finalWasEdited = Boolean(finalContent && finalContent.value.trim());
@@ -76,8 +77,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateStudioMode = () => {
         if (studio) {
-            studio.dataset.mode = selectedMode().toLowerCase();
+            const modeName = selectedMode().toLowerCase();
+            studio.dataset.mode = modeName;
+            document.body.dataset.mode = modeName;
         }
+    };
+
+    const formatDebugValue = (value) => {
+        if (!value) {
+            return "unknown";
+        }
+
+        return String(value).replace(/_/g, " ");
+    };
+
+    const showAiAnalysis = (metadata) => {
+        if (!aiAnalysis || !metadata) {
+            return;
+        }
+
+        aiAnalysis.hidden = false;
+        aiAnalysis.innerHTML = `
+            <strong>AI Analysis</strong>
+            <span>Detected type: ${formatDebugValue(metadata.content_type)}</span>
+            <span>Detected tone: ${formatDebugValue(metadata.tone)}</span>
+            <span>Intensity: ${formatDebugValue(metadata.intensity)}</span>
+            <span>Mode: ${formatDebugValue(metadata.mode)}</span>
+            <span>Action: ${formatDebugValue(metadata.action)}</span>
+            <span>Source: ${formatDebugValue(metadata.source)}</span>
+        `;
+    };
+
+    const hideAiAnalysis = () => {
+        if (!aiAnalysis) {
+            return;
+        }
+
+        aiAnalysis.hidden = true;
+        aiAnalysis.innerHTML = "";
     };
 
     document.querySelectorAll("[data-mode-option]").forEach((option) => {
@@ -137,13 +174,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (!response.ok) {
                     aiStatus.textContent = data.error || "AI Assist could not respond.";
+                    hideAiAnalysis();
                     return;
                 }
 
                 aiOutput.value = data.suggestion;
+                showAiAnalysis(data.debug || data);
                 aiStatus.textContent = `${data.mode} suggestion ready. Accept it only if it fits.`;
             } catch (error) {
                 aiStatus.textContent = "AI Assist is unavailable right now.";
+                hideAiAnalysis();
             } finally {
                 button.disabled = false;
             }
@@ -197,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (discardButton && aiOutput) {
         discardButton.addEventListener("click", () => {
             aiOutput.value = "";
+            hideAiAnalysis();
             if (aiStatus) {
                 aiStatus.textContent = "Suggestion discarded. Your original thought is unchanged.";
             }

@@ -18,6 +18,21 @@
     --rose: #c95f8b;
     --line: rgba(73, 126, 173, 0.18);
     --shadow: 0 22px 55px rgba(61, 88, 133, 0.18);
+    --theme-bg:
+        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.95), transparent 13rem),
+        radial-gradient(circle at 84% 18%, rgba(255, 207, 225, 0.7), transparent 17rem),
+        linear-gradient(180deg, #c7ecff 0%, #e9ecff 42%, #fff2f7 100%);
+    --theme-card:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 237, 246, 0.76)),
+        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.86), transparent 14rem);
+    --theme-primary: var(--blue);
+    --theme-secondary: var(--pink);
+    --theme-accent: var(--blossom);
+    --theme-shadow: var(--shadow);
+    --theme-focus: rgba(247, 169, 198, 0.2);
+    --theme-border: rgba(90, 169, 223, 0.28);
+    --theme-panel-wash: rgba(255, 219, 232, 0.34);
+    --theme-pill-border: rgba(233, 133, 173, 0.24);
     background: var(--blush);
     color: var(--ink);
 }
@@ -35,12 +50,82 @@ body {
     margin: 0;
     overflow-x: hidden;
     position: relative;
-    background:
-        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.95), transparent 13rem),
-        radial-gradient(circle at 84% 18%, rgba(255, 207, 225, 0.7), transparent 17rem),
-        linear-gradient(180deg, #c7ecff 0%, #e9ecff 42%, #fff2f7 100%);
+    background: var(--theme-bg);
     background-size: 100% 100%, 110% 110%, 100% 100%;
     animation: sky-breathe 18s ease-in-out infinite alternate;
+    transition: background 260ms ease;
+}
+
+body[data-mode="calm"] {
+    --theme-bg:
+        radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.96), transparent 14rem),
+        radial-gradient(circle at 82% 18%, rgba(197, 232, 255, 0.72), transparent 17rem),
+        linear-gradient(180deg, #c7edff 0%, #edf9ff 48%, #fff8fb 100%);
+    --theme-card:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.93), rgba(235, 248, 255, 0.78)),
+        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.86), transparent 14rem);
+    --theme-primary: #69b7e8;
+    --theme-secondary: #f2a8c6;
+    --theme-accent: #bce8ff;
+    --theme-shadow: 0 24px 60px rgba(90, 169, 223, 0.18);
+    --theme-focus: rgba(105, 183, 232, 0.22);
+    --theme-border: rgba(105, 183, 232, 0.34);
+    --theme-panel-wash: rgba(188, 232, 255, 0.38);
+    --theme-pill-border: rgba(105, 183, 232, 0.26);
+}
+
+body[data-mode="cinematic"] {
+    --theme-bg:
+        radial-gradient(circle at 18% 12%, rgba(255, 233, 243, 0.72), transparent 13rem),
+        radial-gradient(circle at 82% 18%, rgba(84, 119, 190, 0.28), transparent 18rem),
+        linear-gradient(180deg, #b9d7ff 0%, #d6dcff 42%, #ffe7f1 100%);
+    --theme-card:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.91), rgba(231, 235, 255, 0.82)),
+        radial-gradient(circle at 80% 12%, rgba(255, 190, 215, 0.5), transparent 12rem);
+    --theme-primary: #426faf;
+    --theme-secondary: #dc7ea8;
+    --theme-accent: #8a90dc;
+    --theme-shadow: 0 26px 68px rgba(43, 76, 150, 0.24), 0 0 42px rgba(233, 133, 173, 0.18);
+    --theme-focus: rgba(220, 126, 168, 0.24);
+    --theme-border: rgba(66, 111, 175, 0.36);
+    --theme-panel-wash: rgba(220, 126, 168, 0.28);
+    --theme-pill-border: rgba(220, 126, 168, 0.28);
+}
+
+body[data-mode="poetic"] {
+    --theme-bg:
+        radial-gradient(circle at 20% 12%, rgba(255, 255, 255, 0.95), transparent 13rem),
+        radial-gradient(circle at 80% 16%, rgba(255, 190, 218, 0.7), transparent 17rem),
+        linear-gradient(180deg, #dfe9ff 0%, #fff0f8 48%, #fffaf5 100%);
+    --theme-card:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 238, 247, 0.86)),
+        radial-gradient(circle at 16% 10%, rgba(222, 216, 255, 0.54), transparent 13rem);
+    --theme-primary: #d978a5;
+    --theme-secondary: #9e98dd;
+    --theme-accent: #ffd2e4;
+    --theme-shadow: 0 24px 64px rgba(233, 133, 173, 0.23);
+    --theme-focus: rgba(233, 133, 173, 0.24);
+    --theme-border: rgba(217, 120, 165, 0.36);
+    --theme-panel-wash: rgba(255, 210, 228, 0.42);
+    --theme-pill-border: rgba(158, 152, 221, 0.26);
+}
+
+body[data-mode="clarity"] {
+    --theme-bg:
+        radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.98), transparent 12rem),
+        radial-gradient(circle at 84% 18%, rgba(196, 237, 255, 0.65), transparent 16rem),
+        linear-gradient(180deg, #d7f4ff 0%, #f9fdff 52%, #fff8fb 100%);
+    --theme-card:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(244, 252, 255, 0.86)),
+        radial-gradient(circle at 82% 12%, rgba(197, 232, 255, 0.42), transparent 13rem);
+    --theme-primary: #48b0dc;
+    --theme-secondary: #7cbde6;
+    --theme-accent: #ffffff;
+    --theme-shadow: 0 24px 58px rgba(72, 176, 220, 0.17);
+    --theme-focus: rgba(72, 176, 220, 0.22);
+    --theme-border: rgba(72, 176, 220, 0.34);
+    --theme-panel-wash: rgba(215, 244, 255, 0.46);
+    --theme-pill-border: rgba(72, 176, 220, 0.24);
 }
 
 body::before {
@@ -291,11 +376,10 @@ a {
     z-index: 5;
     border: 1px solid var(--line);
     border-radius: 26px;
-    background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 237, 246, 0.76)),
-        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.86), transparent 14rem);
-    box-shadow: var(--shadow);
+    background: var(--theme-card);
+    box-shadow: var(--theme-shadow);
     backdrop-filter: blur(12px);
+    transition: background 260ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .paper-card::before {
@@ -449,7 +533,7 @@ a {
     border-radius: 999px;
     margin-top: 1rem;
     padding: 0.78rem 1.18rem;
-    background: linear-gradient(135deg, var(--blue), var(--pink));
+    background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
     color: #ffffff;
     font: inherit;
     font-weight: 850;
@@ -562,8 +646,8 @@ a {
 .button:hover,
 .button:focus-visible {
     transform: translateY(-2px);
-    background: linear-gradient(135deg, var(--blue-deep), var(--blossom));
-    box-shadow: 0 16px 32px rgba(95, 120, 178, 0.26);
+    background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
+    box-shadow: var(--theme-shadow);
 }
 
 .button-secondary {
@@ -637,7 +721,7 @@ a {
 .form textarea:focus {
     border-color: rgba(90, 169, 223, 0.72);
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(247, 169, 198, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 4px var(--theme-focus), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .form textarea {
@@ -703,27 +787,27 @@ a {
 
 .writing-studio {
     width: min(100%, 1060px);
-    transition: box-shadow 180ms ease, border-color 180ms ease;
+    transition: background 220ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .writing-studio[data-mode="calm"] {
     border-color: rgba(90, 169, 223, 0.32);
-    box-shadow: 0 24px 60px rgba(90, 169, 223, 0.18);
+    box-shadow: var(--theme-shadow);
 }
 
 .writing-studio[data-mode="cinematic"] {
     border-color: rgba(143, 125, 218, 0.36);
-    box-shadow: 0 24px 68px rgba(43, 76, 150, 0.22), 0 0 40px rgba(233, 133, 173, 0.16);
+    box-shadow: var(--theme-shadow);
 }
 
 .writing-studio[data-mode="poetic"] {
     border-color: rgba(233, 133, 173, 0.42);
-    box-shadow: 0 24px 64px rgba(233, 133, 173, 0.22);
+    box-shadow: var(--theme-shadow);
 }
 
 .writing-studio[data-mode="clarity"] {
     border-color: rgba(72, 176, 220, 0.4);
-    box-shadow: 0 24px 58px rgba(72, 176, 220, 0.17);
+    box-shadow: var(--theme-shadow);
 }
 
 .mode-field {
@@ -780,6 +864,11 @@ a {
     transform: translateY(-2px);
 }
 
+body[data-mode] .mode-card input:checked + span {
+    border-color: var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
 .mode-calm input:checked + span {
     border-color: rgba(90, 169, 223, 0.55);
     background: #eef9ff;
@@ -815,6 +904,14 @@ a {
     border-radius: 24px;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.5);
+    transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+body[data-mode] .studio-panel {
+    border-color: var(--theme-border);
+    background:
+        radial-gradient(circle at 92% 10%, var(--theme-panel-wash), transparent 8rem),
+        rgba(255, 255, 255, 0.56);
 }
 
 .field-heading {
@@ -851,11 +948,64 @@ a {
         rgba(255, 255, 255, 0.5);
 }
 
+body[data-mode] .ai-panel {
+    border-color: var(--theme-border);
+    background:
+        radial-gradient(circle at 82% 8%, var(--theme-panel-wash), transparent 8rem),
+        rgba(255, 255, 255, 0.58);
+    box-shadow: var(--theme-shadow);
+}
+
 .assist-actions,
 .assist-controls {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
+}
+
+.ai-analysis {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(90, 169, 223, 0.22);
+    border-radius: 18px;
+    margin: 0.85rem 0 0.75rem;
+    padding: 0.68rem 0.75rem;
+    background: rgba(255, 255, 255, 0.64);
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+    box-shadow: 0 10px 24px rgba(79, 110, 159, 0.08);
+}
+
+.ai-analysis[hidden] {
+    display: none;
+}
+
+.ai-analysis strong {
+    color: var(--ink);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.ai-analysis span {
+    border: 1px solid rgba(90, 169, 223, 0.16);
+    border-radius: 999px;
+    padding: 0.28rem 0.5rem;
+    background: rgba(255, 255, 255, 0.68);
+}
+
+body[data-mode] .ai-analysis {
+    border-color: var(--theme-border);
+    background:
+        radial-gradient(circle at 8% 20%, var(--theme-panel-wash), transparent 6rem),
+        rgba(255, 255, 255, 0.68);
+}
+
+body[data-mode] .ai-analysis span {
+    border-color: var(--theme-pill-border);
 }
 
 .assist-actions .button,
@@ -869,6 +1019,13 @@ a {
     min-height: 12rem;
     border-style: dashed;
     background: rgba(255, 249, 253, 0.78);
+}
+
+body[data-mode] #ai-output {
+    border-color: var(--theme-border);
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.86)),
+        radial-gradient(circle at 80% 12%, var(--theme-panel-wash), transparent 10rem);
 }
 
 #raw-content {

@@ -377,7 +377,7 @@ def analyze_input_rule_based(text):
             emotional_tone != "neutral"
             or content_type in ("personal feeling", "relationship", "memory", "uncertainty")
         ),
-        "source": "rule_based",
+        "source": "rule_based_fallback",
     }
 
 
@@ -903,6 +903,10 @@ def ai_assist():
         {
             "mode": mode,
             "action": action,
+            "tone": debug["tone"],
+            "content_type": debug["content_type"],
+            "intensity": debug["intensity"],
+            "source": debug["source"],
             "suggestion": get_ai_suggestion(text, mode, action),
             "debug": debug,
         }

@@ -68,6 +68,7 @@
                     <button class="button button-secondary" type="button" data-ai-action="Make it softer">Make it softer</button>
                     <button class="button button-secondary" type="button" data-ai-action="Summarize meaning">Summarize meaning</button>
                 </div>
+                <div class="ai-analysis" data-ai-analysis aria-live="polite" hidden></div>
                 <textarea id="ai-output" name="ai_output" rows="8" data-ai-output placeholder="AI suggestions appear here. They will not replace your writing unless you accept them.">{{ ai_output or '' }}</textarea>
                 <div class="assist-controls">
                     <button class="button" type="button" data-accept-suggestion>Accept suggestion</button>

@@ -12,6 +12,16 @@ The classifier predicts three labels from a raw journal thought:
 
 These labels help PILOT choose calmer, clearer, more mode-aware mock AI suggestions.
 
+Allowed `content_type` labels:
+
+- `personal_feeling`
+- `factual_news`
+- `goal_task`
+- `memory`
+- `relationship`
+- `uncertainty`
+- `business_promotion`
+
 ## Dataset Format
 
 `datasets/tone_classifier_samples.jsonl` contains one JSON object per line:

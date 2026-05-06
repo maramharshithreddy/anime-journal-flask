@@ -67,6 +67,28 @@ EMOTION_KEYWORDS = {
     "confused": ("confused", "unsure", "uncertain", "lost", "don't know", "unclear"),
 }
 CONTENT_KEYWORDS = {
+    "business_promotion": (
+        "business",
+        "local businesses",
+        "leads",
+        "outreach",
+        "clients",
+        "customers",
+        "saas",
+        "product",
+        "tool",
+        "follow-ups",
+        "follow ups",
+        "sales",
+        "marketing",
+        "promote",
+        "potential clients",
+        "lead engine",
+        "reach out",
+        "crm",
+        "pipeline",
+        "prospects",
+    ),
     "goal/task": ("need to", "assignment", "finish", "task", "deadline", "work", "study"),
     "relationship": ("friend", "mother", "father", "family", "relationship", "they", "we", "someone"),
     "memory": ("remember", "used to", "back then", "miss the way", "childhood", "before"),
@@ -92,6 +114,7 @@ ML_CONTENT_TYPE_TO_INTERNAL = {
     "memory": "memory",
     "relationship": "relationship",
     "uncertainty": "uncertainty",
+    "business_promotion": "business_promotion",
 }
 
 
@@ -251,6 +274,8 @@ def detect_emotional_tone(text_lower):
 
 
 def detect_content_type(text_lower):
+    if contains_any(text_lower, CONTENT_KEYWORDS["business_promotion"]):
+        return "business_promotion"
     if contains_any(text_lower, CONTENT_KEYWORDS["news/fact"]):
         return "news/fact"
     if contains_any(text_lower, CONTENT_KEYWORDS["goal/task"]):
@@ -295,8 +320,13 @@ def predict_input_pattern_safe(text):
 def build_analysis_from_prediction(text, prediction):
     cleaned = clean_ai_text(text)
     text_lower = cleaned.lower()
-    content_type = ML_CONTENT_TYPE_TO_INTERNAL.get(
-        prediction.get("content_type"), detect_content_type(text_lower)
+    rule_content_type = detect_content_type(text_lower)
+    content_type = (
+        "business_promotion"
+        if rule_content_type == "business_promotion"
+        else ML_CONTENT_TYPE_TO_INTERNAL.get(
+            prediction.get("content_type"), rule_content_type
+        )
     )
     emotional_tone = prediction.get("tone") or detect_emotional_tone(text_lower)
     intensity = prediction.get("intensity") or detect_intensity(text_lower)
@@ -371,6 +401,8 @@ def input_focus(analysis):
         return "tiredness and the wish to become better are both present"
     if analysis["content_type"] == "news/fact":
         return f"the public detail: {text}"
+    if analysis["content_type"] == "business_promotion":
+        return "the product story around leads, outreach, follow-ups, and consistent client development"
     if analysis["content_type"] == "goal/task":
         return f"the task pressure around {theme_from_analysis(analysis)}"
     if analysis["content_type"] == "memory":
@@ -391,6 +423,8 @@ def meaning_for(analysis):
         return "You may be comparing your current self to an older version, and that makes returning feel heavier."
     if "tired" in lower_text and "better" in lower_text:
         return "Your energy is low, but your direction still matters."
+    if analysis["content_type"] == "business_promotion":
+        return "The product exists to make promotion more consistent and less scattered for people who need better outreach habits."
     if analysis["is_factual"]:
         return factual_meaning(analysis)
     if analysis["content_type"] == "goal/task":
@@ -411,6 +445,8 @@ def next_step_for(analysis):
         return "watch for the next legal filing or appeal"
     if "coming back" in text_lower and "old version" in text_lower:
         return "return slowly, without forcing yourself to become who you used to be"
+    if content_type == "business_promotion":
+        return "explain the problem, audience, workflow, and value clearly"
     if content_type == "news/fact":
         return "track what decision, response, or appeal comes next"
     if content_type == "goal/task":
@@ -455,6 +491,39 @@ def mode_options(mode, analysis):
     next_step = next_step_for(analysis)
     tone = tone_modifier(analysis)
     is_returning = "coming back" in lower_text or "old version" in lower_text
+
+    if analysis["content_type"] == "business_promotion":
+        if mode == "Calm":
+            return [
+                "I built this tool to make outreach feel less scattered for local businesses. Instead of guessing who to contact, they can find leads, organize conversations, and follow up with more consistency.",
+                "This product is a simple daily system for finding potential clients, keeping outreach organized, and making follow-ups easier to trust.",
+                "The idea is practical: help local businesses turn promotion into a steady habit instead of a stressful scramble.",
+                "I made this because promoting a product can feel messy. The tool brings leads, outreach, and follow-ups into one calmer workflow.",
+                "This tool helps founders and local businesses keep client outreach simple: find the right people, track the conversation, and return to follow-ups each day.",
+            ]
+        if mode == "Cinematic":
+            return [
+                "Every local business faces the same challenge: finding the right people before momentum fades. This tool turns that challenge into a daily workflow: discover leads, track outreach, and move follow-ups toward real conversations.",
+                "A founder opens the day with one clear mission: find potential clients, reach out, and keep the pipeline moving. This tool turns that rhythm into a repeatable system.",
+                "The story starts with a familiar problem: great products still need steady promotion. This tool gives outreach a place to live, from lead discovery to follow-up.",
+                "Instead of scattered notes and missed chances, the workflow becomes direct: find leads, organize outreach, and keep every follow-up moving toward a client conversation.",
+                "The product frames outreach as a daily engine: local businesses discover prospects, manage conversations, and keep momentum alive after the first contact.",
+            ]
+        if mode == "Poetic":
+            return [
+                "A business does not grow by waiting quietly. It grows through steady conversations, small follow-ups, and the courage to reach the right people at the right time.",
+                "The tool turns promotion into a rhythm: a lead found, a message sent, a follow-up remembered before the thread goes cold.",
+                "Growth is often built in ordinary moments: one prospect, one conversation, one follow-up kept alive with care.",
+                "For founders who know the ache of selling their own work, this tool offers a steadier path from scattered effort to daily outreach.",
+                "A pipeline is not just a list; it is a trail of possible conversations. This tool helps businesses walk that trail with consistency.",
+            ]
+        return [
+            "Problem:\nLocal businesses struggle to find and follow up with leads consistently.\n\nSolution:\nThis tool helps them discover leads, organize outreach, and track follow-ups.\n\nAudience:\nLocal businesses, founders, and SaaS builders.\n\nValue:\nIt saves time, creates consistency, and helps turn prospects into conversations.",
+            "Problem:\nPromotion gets scattered when leads, outreach, and follow-ups live in different places.\n\nSolution:\nA simple daily system for finding potential clients and reaching out consistently.\n\nAudience:\nLocal businesses and product builders who need repeatable outreach.\n\nValue:\nMore organized selling, fewer missed follow-ups, and a clearer path to client conversations.",
+            "Problem:\nFounders often know they need outreach but lack a steady system.\n\nSolution:\nThe tool combines lead discovery, outreach organization, and follow-up tracking.\n\nAudience:\nLocal businesses, SaaS founders, and small teams.\n\nValue:\nIt turns promotion into a manageable daily workflow.",
+            "Problem:\nPotential clients are easy to lose when outreach is inconsistent.\n\nSolution:\nUse one workflow to find leads, contact them, and remember follow-ups.\n\nAudience:\nLocal businesses and founders promoting their own products.\n\nValue:\nA more reliable pipeline and less manual chaos.",
+            "Problem:\nBusiness growth depends on conversations, but promotion can feel disorganized.\n\nSolution:\nThis tool creates a repeatable outreach system from lead search to follow-up.\n\nAudience:\nLocal service businesses, founders, and SaaS builders.\n\nValue:\nIt helps users build consistency and move prospects toward real conversations.",
+        ]
 
     if mode == "Calm":
         if analysis["is_factual"]:
@@ -560,6 +629,14 @@ def make_softer(text, mode):
             f"{sentence_case(text)}. It is enough to name what happened and watch what follows.",
             f"Keep the wording steady: {text}. No emotional interpretation has to be forced onto it.",
         ]
+    elif analysis["content_type"] == "business_promotion":
+        options = [
+            "This can sound warmer without becoming salesy: I built the tool to help local businesses find leads, keep outreach organized, and follow up consistently.",
+            "A softer pitch can stay practical: it helps founders and local businesses make outreach feel more manageable day by day.",
+            "The message can be simple and less salesy: this product gives people a steadier way to find prospects, reach out, and keep conversations moving.",
+            "Instead of pushing hard, frame it as outreach support: the tool helps businesses build a daily habit without losing track of follow-ups.",
+            "Make the pitch more human: I built this because promoting a product is hard, and I wanted a clearer outreach system for staying consistent.",
+        ]
     else:
         options = [
             f"{sentence_case(text)}\nYou do not have to carry this perfectly. Keep the meaning, lower the pressure, and take one gentle step from here.",
@@ -583,6 +660,15 @@ def summarize_meaning(text, mode):
             "Theme: a thought waiting to be named.\n"
             "Meaning: there is not enough detail yet to infer a clear pattern.\n"
             "Next step: write one sentence about what happened or what you feel."
+        )
+
+    if analysis["content_type"] == "business_promotion":
+        return (
+            "Purpose: Help businesses create a simple, consistent outreach system.\n"
+            "Audience: Local businesses, founders, SaaS builders, and teams that need clients.\n"
+            "Problem: Finding leads, organizing outreach, and remembering follow-ups can become scattered.\n"
+            "Solution: A tool that helps users discover leads, manage outreach, and track follow-ups in one daily workflow.\n"
+            "Value: Saves time, builds consistency, and turns prospects into real conversations."
         )
 
     return (

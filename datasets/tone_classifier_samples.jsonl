@@ -68,3 +68,15 @@
 {"text":"I feel confused but curious about what comes next","tone":"confused","content_type":"personal_feeling","intensity":"low"}
 {"text":"City officials approved temporary shelter plans","tone":"neutral","content_type":"factual_news","intensity":"low"}
 {"text":"I am terrified that I will disappoint everyone","tone":"anxious","content_type":"personal_feeling","intensity":"high"}
+{"text":"I built a tool that helps local businesses find leads, organize outreach, and track follow-ups","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}
+{"text":"My SaaS product helps founders find potential clients and reach out consistently","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}
+{"text":"I am creating a lead engine for local service businesses","tone":"inspired","content_type":"business_promotion","intensity":"medium"}
+{"text":"The tool organizes sales outreach and keeps follow-ups from getting lost","tone":"neutral","content_type":"business_promotion","intensity":"low"}
+{"text":"I need a CRM style pipeline for prospects and outreach","tone":"neutral","content_type":"business_promotion","intensity":"medium"}
+{"text":"This product helps small businesses turn prospects into conversations","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}
+{"text":"I struggled to promote my SaaS and wanted a daily outreach system","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}
+{"text":"Our marketing workflow helps customers track leads and follow ups","tone":"neutral","content_type":"business_promotion","intensity":"low"}
+{"text":"I built a simple sales tool for local businesses that need more clients","tone":"inspired","content_type":"business_promotion","intensity":"medium"}
+{"text":"The product helps founders manage outreach without losing potential clients","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}
+{"text":"A pipeline tool can help businesses remember who to contact next","tone":"neutral","content_type":"business_promotion","intensity":"low"}
+{"text":"I want to help local businesses promote their services with less chaos","tone":"hopeful","content_type":"business_promotion","intensity":"medium"}

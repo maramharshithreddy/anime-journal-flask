@@ -198,6 +198,12 @@ def extract_key_phrases(text):
         "need",
         "have",
         "keep",
+        "is",
+        "not",
+        "when",
+        "you",
+        "are",
+        "especially",
         "to",
         "it",
         "i",
@@ -214,7 +220,11 @@ def extract_key_phrases(text):
             phrases.append(words[index])
         if index < len(words) - 1:
             pair = f"{words[index]} {words[index + 1]}"
-            if not any(part.lower() in stop_words for part in pair.split()):
+            parts = pair.split()
+            if (
+                not any(part.lower() in stop_words for part in parts)
+                and any(len(part) > 3 for part in parts)
+            ):
                 phrases.append(pair)
     return phrases[:5]
 
@@ -341,9 +351,9 @@ def analyze_input_rule_based(text):
     }
 
 
-def choose_pattern(text, mode, action):
+def choose_pattern(text, mode, action, count=5):
     basis = f"{normalize_mode(mode)}|{action}|{text}"
-    return sum(ord(character) for character in basis) % 3
+    return sum(ord(character) for character in basis) % count
 
 
 def theme_from_analysis(analysis):
@@ -352,8 +362,55 @@ def theme_from_analysis(analysis):
     return analysis["cleaned"][:90]
 
 
+def input_focus(analysis):
+    text = analysis["cleaned"]
+    lower_text = text.lower()
+    if "coming back" in lower_text and "old version" in lower_text:
+        return "coming back feels difficult because you are returning as someone changed"
+    if "tired" in lower_text and "better" in lower_text:
+        return "tiredness and the wish to become better are both present"
+    if analysis["content_type"] == "news/fact":
+        return f"the public detail: {text}"
+    if analysis["content_type"] == "goal/task":
+        return f"the task pressure around {theme_from_analysis(analysis)}"
+    if analysis["content_type"] == "memory":
+        return f"the memory carried by {theme_from_analysis(analysis)}"
+    if analysis["content_type"] == "relationship":
+        return f"the relationship signal around {theme_from_analysis(analysis)}"
+    if analysis["content_type"] == "uncertainty":
+        return f"the uncertainty around {theme_from_analysis(analysis)}"
+    return theme_from_analysis(analysis)
+
+
+def meaning_for(analysis):
+    text = analysis["cleaned"]
+    lower_text = text.lower()
+    if "temporary restraining order" in lower_text and "removal case" in lower_text:
+        return "The case continues without that temporary protection."
+    if "coming back" in lower_text and "old version" in lower_text:
+        return "You may be comparing your current self to an older version, and that makes returning feel heavier."
+    if "tired" in lower_text and "better" in lower_text:
+        return "Your energy is low, but your direction still matters."
+    if analysis["is_factual"]:
+        return factual_meaning(analysis)
+    if analysis["content_type"] == "goal/task":
+        return "Avoidance may be a sign that the first step needs to be smaller."
+    if analysis["content_type"] == "memory":
+        return "The past is asking to be honored without becoming the only place you can belong."
+    if analysis["content_type"] == "relationship":
+        return "The feeling points toward a need for care, clarity, or repair."
+    if analysis["content_type"] == "uncertainty":
+        return "The unknown is taking up space because the next choice is not clear yet."
+    return "This is a personal reflection, so the emotional pattern matters as much as the facts."
+
+
 def next_step_for(analysis):
+    text_lower = analysis["cleaned"].lower()
     content_type = analysis["content_type"]
+    if "temporary restraining order" in text_lower or "removal case" in text_lower:
+        return "watch for the next legal filing or appeal"
+    if "coming back" in text_lower and "old version" in text_lower:
+        return "return slowly, without forcing yourself to become who you used to be"
     if content_type == "news/fact":
         return "track what decision, response, or appeal comes next"
     if content_type == "goal/task":
@@ -371,6 +428,110 @@ def factual_meaning(analysis):
     return "The note is centered on an external event, so the writing should separate the facts from any reaction around them."
 
 
+def tone_modifier(analysis):
+    tone = str(analysis["emotional_tone"])
+    intensity = str(analysis["intensity"])
+    modifiers = {
+        "sad": "with tenderness for what feels lost",
+        "anxious": "without adding pressure to what already feels tense",
+        "angry": "while preserving the boundary inside the anger",
+        "hopeful": "while protecting the hope that is still present",
+        "neutral": "with clear attention to what happened",
+        "inspired": "with respect for the energy that wants to move",
+        "confused": "without pretending the answer is already clear",
+    }
+    base = modifiers.get(tone, modifiers["neutral"])
+    if intensity == "high":
+        return f"{base}, and with extra care for the intensity of it"
+    return base
+
+
+def mode_options(mode, analysis):
+    text = analysis["cleaned"]
+    lower_text = text.lower()
+    sentence = sentence_case(text)
+    focus = input_focus(analysis)
+    meaning = meaning_for(analysis)
+    next_step = next_step_for(analysis)
+    tone = tone_modifier(analysis)
+    is_returning = "coming back" in lower_text or "old version" in lower_text
+
+    if mode == "Calm":
+        if analysis["is_factual"]:
+            return [
+                f"{sentence}. A calm note can keep this factual: {meaning} From here, {next_step}.",
+                f"This entry records {focus}. It does not need extra drama; it needs a clear place on the page.",
+                f"{sentence}. Writing it calmly helps separate what happened from any reaction around it.",
+                f"The fact to hold is simple: {text}. The next useful move is to {next_step}.",
+                f"This is a public or factual detail, not a feeling to solve. {meaning}",
+            ]
+        return [
+            f"{sentence}. You can hold this {tone}. {meaning} You only need one honest step from where you are now.",
+            f"{focus.capitalize()}. Let that be enough for this page; the return does not have to happen all at once.",
+            f"{sentence}. There is no need to become a past version of yourself to begin again.",
+            f"This thought can be met gently: {focus}. {meaning}",
+            f"{sentence}. Lower the pressure, keep the truth, and {next_step}.",
+        ]
+
+    if mode == "Cinematic":
+        if analysis["is_factual"]:
+            return [
+                f"A decision lands in the record: {text}. The next part of the case now waits on {next_step}.",
+                f"The public story turns on one sentence: {text}. What matters next is what response follows.",
+                f"The room changes after the decision: {text}. The facts stay sharp, and the outcome remains unfinished.",
+                f"A legal detail becomes the center of the scene: {text}. The tension is procedural, not personal.",
+                f"The case moves forward under a hard fact: {text}. The next filing will decide where the story bends.",
+            ]
+        if is_returning:
+            return [
+                "The return does not feel like a grand entrance. It feels like standing at the edge of a familiar place, realizing the person who left and the person who came back are not the same.",
+                f"{sentence}. In this scene, the tension is not the doorway; it is recognizing how much the person reaching for it has changed.",
+                f"A familiar place waits ahead, but the old self is not the one walking toward it. That is why {focus} feels so charged.",
+                f"The scene holds on the threshold: {focus}. Nothing explodes, but everything has shifted.",
+                f"{sentence}. The drama is quiet: a return, a changed self, and the courage to enter without pretending.",
+            ]
+        return [
+            f"A quiet turning point forms around {focus}. The scene is not loud, but the choice to continue gives it movement.",
+            f"{sentence}. The tension is human and close: wanting change while carrying the weight of the day.",
+            f"The day narrows to this honest line: {focus}. What happens next begins with one manageable step.",
+            f"{sentence}. It plays like a small scene of endurance, where hope stays present even when energy is low.",
+            f"The pressure sits in the foreground, but the direction is still visible: {focus}.",
+        ]
+
+    if mode == "Poetic":
+        if analysis["is_factual"]:
+            return [
+                f"A ruling closes one gate: {text}. The case remains outside it, waiting for another opening.",
+                f"The words fall with the weight of stamped paper: {text}. What is unresolved keeps its place.",
+                f"A public decision becomes a hard edge on the page: {text}. The next turn has not arrived yet.",
+                f"The order is denied, and the case stands in the pause after refusal.",
+                f"A legal door stays shut for now: {text}. The waiting becomes part of the record.",
+            ]
+        if is_returning:
+            return [
+                "You are not the old version, and maybe that is why coming back aches. The door is familiar, but the hands reaching for it have changed.",
+                f"{sentence}. The old shape does not fit, yet the path still remembers your footsteps.",
+                f"Returning can ache when the self has outgrown its former name. {meaning}",
+                f"{focus.capitalize()} is a quiet threshold: part memory, part becoming.",
+                f"{sentence}. Something in the return asks not for the old self, but for a truer one.",
+            ]
+        return [
+            f"{sentence}. Hope is not a flame today; it is an ember that still knows how to stay warm.",
+            f"{focus.capitalize()} rests in the same hand: the ache of effort and the wish to grow.",
+            f"{sentence}. Even tired soil can hold the first green thread of becoming.",
+            f"The feeling is not simple, but it is alive: {focus}. Something in it still leans toward light.",
+            f"{sentence}. There is beauty in wanting better even before strength has fully returned.",
+        ]
+
+    return [
+        f"Main thought: {sentence}.\nMeaning: {meaning}\nNext step: {next_step}.",
+        f"Key point: {focus.capitalize()}.\nMeaning: {meaning}\nNext step: {next_step}.",
+        f"What is happening: {sentence}.\nWhy it matters: {meaning}\nTry next: {next_step}.",
+        f"Core issue: {focus}.\nInterpretation: {meaning}\nUseful action: {next_step}.",
+        f"Summary: {sentence}.\nPattern: {analysis['content_type']} with {analysis['emotional_tone']} tone.\nNext step: {next_step}.",
+    ]
+
+
 def transform_thought(text, mode):
     analysis = analyze_input(text)
     text = analysis["cleaned"]
@@ -379,66 +540,8 @@ def transform_thought(text, mode):
     if not text:
         return "Share a thought first, and PILOT will help shape it."
 
-    pattern = choose_pattern(text, mode, "Transform my thought")
-
-    if mode == "Clarity":
-        meaning = (
-            "The situation continues without that temporary protection."
-            if analysis["content_type"] == "news/fact"
-            else f"The main thread is {theme_from_analysis(analysis)}."
-        )
-        return (
-            f"Key point: {sentence_case(text)}.\n"
-            f"Meaning: {meaning}\n"
-            f"Next thought: {next_step_for(analysis)}."
-        )
-
-    if mode == "Calm":
-        if analysis["is_factual"]:
-            options = [
-                f"Today's note captures a tense public detail: {text}. Writing it down helps separate the facts from the emotions around it.",
-                f"This reads as a factual moment with unresolved edges: {text}. A calm page can hold what happened without rushing to decide what it means.",
-                f"The entry records an external decision: {text}. Keeping it clear makes room to notice any reaction separately.",
-            ]
-        else:
-            options = [
-                f"{sentence_case(text)}. I can meet this thought gently and let it become clear one breath at a time.",
-                f"This feeling can be held without being fixed immediately: {text}. I can give it patience, space, and a steadier shape.",
-                f"I can write this honestly and softly: {text}. The page does not ask me to solve everything at once.",
-            ]
-        return options[pattern]
-
-    if mode == "Cinematic":
-        if analysis["is_factual"]:
-            options = [
-                f"A decision lands quietly: {text}, leaving the situation suspended in uncertainty.",
-                f"The public record shifts with one hard turn: {text}. What follows now becomes the next scene to watch.",
-                f"The moment has the weight of a closed door: {text}, and the case waits for its next movement.",
-            ]
-        else:
-            options = [
-                f"The moment gathers around one feeling: {text}. It moves like a scene where the smallest choice carries the most weight.",
-                f"A quiet conflict takes shape: {text}. What matters is not only what happens next, but what the feeling reveals.",
-                f"The scene narrows to this inner line: {text}. Everything around it seems to pause long enough to be understood.",
-            ]
-        return options[pattern]
-
-    if mode == "Poetic":
-        if analysis["is_factual"]:
-            options = [
-                f"A ruling falls like a closed gate: {text}. The matter remains outside it, waiting for another opening.",
-                f"The words settle with the weight of stamped paper: {text}. What is unresolved keeps its place in the air.",
-                f"A public decision becomes a hard edge on the page: {text}. The next turn has not arrived yet.",
-            ]
-        else:
-            options = [
-                f"{sentence_case(text)}. The feeling moves like a small tide, returning until it is finally named.",
-                f"{sentence_case(text)}. Something in it glows softly, not to demand an answer, but to be witnessed.",
-                f"{sentence_case(text)}. It carries the ache of a doorway: one side memory, the other becoming.",
-            ]
-        return options[pattern]
-
-    return text
+    options = mode_options(mode, analysis)
+    return options[choose_pattern(text, mode, "Transform my thought", len(options))]
 
 
 def make_softer(text, mode):
@@ -450,17 +553,22 @@ def make_softer(text, mode):
         return "There is no rush. Start with one honest sentence, and let the rest come slowly."
 
     if analysis["is_factual"]:
-        return (
-            f"{sentence_case(text)}.\n"
-            "A softer version can keep the facts intact while reducing the pressure around them. "
-            f"For now, the next useful step is to {next_step_for(analysis)}."
-        )
-
-    return (
-        f"{mode} softer suggestion:\n"
-        f"{sentence_case(text)}\n"
-        "I do not have to turn this into a judgment against myself. I can keep the meaning, lower the pressure, and take one gentle step from here."
-    )
+        options = [
+            f"{sentence_case(text)}. A softer version keeps the facts intact and avoids adding conclusions too early.",
+            f"The note can stay simple: {text}. The next useful step is to {next_step_for(analysis)}.",
+            f"This can be recorded without extra pressure: {text}. Let the facts remain clear first.",
+            f"{sentence_case(text)}. It is enough to name what happened and watch what follows.",
+            f"Keep the wording steady: {text}. No emotional interpretation has to be forced onto it.",
+        ]
+    else:
+        options = [
+            f"{sentence_case(text)}\nYou do not have to carry this perfectly. Keep the meaning, lower the pressure, and take one gentle step from here.",
+            f"{meaning_for(analysis)}\nA softer version can begin with patience instead of blame.",
+            f"{input_focus(analysis).capitalize()}.\nLet this be true without turning it into a verdict on who you are.",
+            f"{sentence_case(text)}\nYou can honor the feeling and still move slowly.",
+            f"This is tender, not final: {input_focus(analysis)}. Give it room before asking it for answers.",
+        ]
+    return options[choose_pattern(text, mode, "Make it softer", len(options))]
 
 
 def summarize_meaning(text, mode):
@@ -477,13 +585,10 @@ def summarize_meaning(text, mode):
             "Next step: write one sentence about what happened or what you feel."
         )
 
-    meaning = factual_meaning(analysis) if analysis["is_factual"] else (
-        "This is a personal reflection, so the emotional pattern matters as much as the facts."
-    )
     return (
         f"Tone: {analysis['emotional_tone']} ({analysis['intensity']} intensity).\n"
         f"Theme: {theme_from_analysis(analysis)}.\n"
-        f"Meaning: {meaning} Mode lens: {profile['purpose']}\n"
+        f"Meaning: {meaning_for(analysis)} Mode lens: {profile['purpose']}\n"
         f"Next step: {next_step_for(analysis)}."
     )
 
@@ -689,11 +794,31 @@ def ai_assist():
     if not text.strip():
         return jsonify({"error": "Add a thought before using AI Assist."}), 400
 
+    analysis = analyze_input(text)
+    debug = {
+        "mode": mode,
+        "action": action,
+        "tone": str(analysis["emotional_tone"]),
+        "content_type": analysis["content_type"],
+        "intensity": str(analysis["intensity"]),
+        "source": analysis.get("source", "unknown"),
+    }
+    print(
+        "AI_ASSIST_DEBUG "
+        f"mode={debug['mode']} "
+        f"action={debug['action']} "
+        f"tone={debug['tone']} "
+        f"content_type={debug['content_type']} "
+        f"intensity={debug['intensity']} "
+        f"source={debug['source']}"
+    )
+
     return jsonify(
         {
             "mode": mode,
             "action": action,
             "suggestion": get_ai_suggestion(text, mode, action),
+            "debug": debug,
         }
     )
 

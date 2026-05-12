@@ -1,6 +1,6 @@
 # PILOT
 
-PILOT is a private Flask journaling app for saving thoughts, moods, and episode notes in a soft blue and pink cherry blossom anime interface.
+PILOT is a private Flask journaling app for saving thoughts, moods, and episode notes in a subtle interface environment.
 
 ## Features
 
